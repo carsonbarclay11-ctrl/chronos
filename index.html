@@ -18,6 +18,7 @@
     --radius: 16px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
     background: var(--bg);
     color: var(--text);
@@ -30,100 +31,84 @@
     background-image: radial-gradient(ellipse at 20% 0%, rgba(76,201,240,0.06) 0%, transparent 60%),
                       radial-gradient(ellipse at 80% 100%, rgba(255,77,109,0.06) 0%, transparent 60%);
   }
+
+  /* ===== PUBLIC VIEW ===== */
+  body.public-view {
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    cursor: none;
+    background: #000;
+  }
+  .pub-phase { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.5rem, 5vw, 3rem); letter-spacing: 0.2em; color: #888; margin-bottom: 10px; text-transform: uppercase; }
+  .pub-team { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 6vw, 4rem); letter-spacing: 0.1em; margin-bottom: 20px; }
+  .pub-team.team-a { color: var(--accent2); }
+  .pub-team.team-b { color: var(--accent1); }
+  .pub-clock { font-family: 'Bebas Neue', sans-serif; font-size: clamp(10rem, 35vw, 28rem); line-height: 0.9; letter-spacing: 0.02em; transition: color 0.3s; color: #fff; }
+  .pub-clock.warning { color: var(--accent3); }
+  .pub-clock.danger { color: var(--accent1); animation: pulse-text 0.5s infinite alternate; }
+  .pub-progress-wrap { width: min(90vw, 800px); height: 8px; background: #222; border-radius: 100px; margin-top: 40px; overflow: hidden; }
+  .pub-progress-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent2), var(--accent1)); transition: width 0.5s linear, background 0.3s; }
+  .pub-progress-fill.warning { background: linear-gradient(90deg, var(--accent3), var(--accent1)); }
+  .pub-progress-fill.danger { background: var(--accent1); }
+  .pub-hint { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); font-family: 'DM Sans', sans-serif; font-size: 0.75rem; color: #333; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* ===== CONTROL VIEW ===== */
   header { text-align: center; margin-bottom: 28px; width: 100%; }
   header h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.8rem, 8vw, 5rem);
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.8rem, 8vw, 5rem);
     letter-spacing: 0.08em;
     background: linear-gradient(135deg, var(--accent2), var(--accent1));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;
   }
   header p { color: var(--muted); font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; }
-  .phases {
-    display: flex; gap: 8px; width: 100%; max-width: 680px;
-    margin-bottom: 20px; flex-wrap: wrap; justify-content: center;
-  }
-  .phase-btn {
-    flex: 1; min-width: 120px; padding: 10px 8px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; color: var(--muted);
-    font-family: 'DM Sans', sans-serif; font-size: 0.78rem;
-    font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
-    cursor: pointer; transition: all 0.2s; text-align: center;
-  }
+
+  .sync-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 100px; padding: 4px 12px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+  .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); transition: background 0.3s; }
+  .sync-dot.connected { background: #43aa8b; animation: pulse-dot 2s infinite; }
+  @keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+  .phases { display: flex; gap: 8px; width: 100%; max-width: 680px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+  .phase-btn { flex: 1; min-width: 120px; padding: 10px 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; transition: all 0.2s; text-align: center; }
   .phase-btn:hover { border-color: var(--accent2); color: var(--accent2); }
-  .phase-btn.active {
-    background: linear-gradient(135deg, rgba(76,201,240,0.15), rgba(255,77,109,0.1));
-    border-color: var(--accent2); color: var(--text);
-  }
-  .phase-btn .phase-time {
-    display: block; font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem; letter-spacing: 0.05em; color: var(--accent2); margin-top: 2px;
-  }
-  .teams-row {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 12px; width: 100%; max-width: 680px; margin-bottom: 16px;
-  }
-  .team-mini-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 16px; cursor: pointer; transition: all 0.2s;
-  }
+  .phase-btn.active { background: linear-gradient(135deg, rgba(76,201,240,0.15), rgba(255,77,109,0.1)); border-color: var(--accent2); color: var(--text); }
+  .phase-btn .phase-time { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.05em; color: var(--accent2); margin-top: 2px; }
+
+  .teams-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 680px; margin-bottom: 16px; }
+  .team-mini-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; transition: all 0.2s; }
   .team-mini-card.active-team { border-color: var(--accent2); background: rgba(76,201,240,0.05); }
   .team-mini-card.active-team.team-b { border-color: var(--accent1); background: rgba(255,77,109,0.05); }
-  .team-mini-card .mini-label {
-    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
-  }
-  .mini-name-input {
-    width: 100%; background: transparent; border: none;
-    border-bottom: 1px solid var(--border); color: var(--text);
-    font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem;
-    letter-spacing: 0.06em; outline: none; padding-bottom: 2px; transition: border-color 0.2s;
-  }
+  .team-mini-card .mini-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .mini-name-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text); font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.06em; outline: none; padding-bottom: 2px; transition: border-color 0.2s; }
   .active-team .mini-name-input { border-bottom-color: var(--accent2); }
   .active-team.team-b .mini-name-input { border-bottom-color: var(--accent1); }
-  .mini-clock {
-    font-family: 'Bebas Neue', sans-serif; font-size: 2rem;
-    margin-top: 8px; color: var(--muted); transition: color 0.2s;
-  }
+  .mini-clock { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; margin-top: 8px; color: var(--muted); transition: color 0.2s; }
   .active-team .mini-clock { color: var(--accent2); }
   .active-team.team-b .mini-clock { color: var(--accent1); }
-  .timer-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 28px 24px 24px;
-    width: 100%; max-width: 680px; margin-bottom: 16px; position: relative; overflow: hidden;
-  }
-  .timer-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, var(--accent2), var(--accent1)); transition: background 0.4s;
-  }
+
+  .timer-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px 24px; width: 100%; max-width: 680px; margin-bottom: 16px; position: relative; overflow: hidden; }
+  .timer-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent2), var(--accent1)); transition: background 0.4s; }
   .timer-card.warning::before { background: linear-gradient(90deg, var(--accent3), var(--accent1)); }
   .timer-card.danger::before { background: var(--accent1); animation: pulse-bar 0.6s infinite alternate; }
-  @keyframes pulse-bar { from { opacity: 1; } to { opacity: 0.4; } }
+  @keyframes pulse-bar { from { opacity:1; } to { opacity:0.4; } }
+
   .team-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
   .team-name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.6rem, 5vw, 2.2rem); letter-spacing: 0.05em; margin-bottom: 16px; }
   .team-a-name { color: var(--accent2); }
   .team-b-name { color: var(--accent1); }
-  .clock-display {
-    font-family: 'Bebas Neue', sans-serif; font-size: clamp(5rem, 20vw, 9rem);
-    line-height: 1; letter-spacing: 0.03em; text-align: center; transition: color 0.3s; margin: 8px 0 20px;
-  }
+
+  .clock-display { font-family: 'Bebas Neue', sans-serif; font-size: clamp(5rem, 20vw, 9rem); line-height: 1; letter-spacing: 0.03em; text-align: center; transition: color 0.3s; margin: 8px 0 20px; }
   .clock-display.warning { color: var(--accent3); }
   .clock-display.danger { color: var(--accent1); animation: pulse-text 0.5s infinite alternate; }
-  @keyframes pulse-text { from { opacity: 1; } to { opacity: 0.6; } }
+  @keyframes pulse-text { from { opacity:1; } to { opacity:0.6; } }
+
   .progress-wrap { background: var(--border); border-radius: 100px; height: 6px; width: 100%; margin-bottom: 24px; overflow: hidden; }
   .progress-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent2), var(--accent1)); transition: width 0.5s linear, background 0.3s; }
   .progress-fill.warning { background: linear-gradient(90deg, var(--accent3), var(--accent1)); }
   .progress-fill.danger { background: var(--accent1); }
+
   .controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-  .btn {
-    padding: 12px 24px; border-radius: 10px; border: none;
-    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
-    cursor: pointer; transition: all 0.15s; letter-spacing: 0.04em;
-  }
+  .btn { padding: 12px 24px; border-radius: 10px; border: none; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.15s; letter-spacing: 0.04em; }
   .btn:active { transform: scale(0.96); }
   .btn-primary { background: linear-gradient(135deg, var(--accent2), #2a8fbd); color: #fff; min-width: 100px; }
   .btn-primary:hover { opacity: 0.9; }
@@ -131,31 +116,22 @@
   .btn-secondary:hover { background: #2a2a3e; }
   .btn-danger { background: rgba(255,77,109,0.12); color: var(--accent1); border: 1px solid rgba(255,77,109,0.25); }
   .btn-danger:hover { background: rgba(255,77,109,0.2); }
+
   .history-section { width: 100%; max-width: 680px; margin-top: 8px; }
   .history-section h3 { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
   .history-list { display: flex; flex-direction: column; gap: 6px; }
-  .history-item {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 10px 14px;
-    display: flex; justify-content: space-between; align-items: center; font-size: 0.83rem; gap: 8px;
-  }
+  .history-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 0.83rem; gap: 8px; }
   .history-item .hi-phase { color: var(--muted); flex: 1; }
   .history-item .hi-team-a { color: var(--accent2); font-weight: 600; }
   .history-item .hi-team-b { color: var(--accent1); font-weight: 600; }
-  .toast {
-    position: fixed; bottom: 24px; left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--accent3); color: #000; font-weight: 700; font-size: 0.9rem;
-    padding: 12px 24px; border-radius: 100px; letter-spacing: 0.04em;
-    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; white-space: nowrap;
-  }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--accent3); color: #000; font-weight: 700; font-size: 0.9rem; padding: 12px 24px; border-radius: 100px; letter-spacing: 0.04em; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; white-space: nowrap; }
   .toast.show { transform: translateX(-50%) translateY(0); }
-  .fullscreen-btn {
-    position: fixed; top: 16px; right: 16px; background: var(--surface);
-    border: 1px solid var(--border); color: var(--muted); border-radius: 8px;
-    padding: 8px 12px; cursor: pointer; font-size: 1rem; transition: all 0.2s; z-index: 100;
-  }
-  .fullscreen-btn:hover { color: var(--text); border-color: var(--accent2); }
+
+  .top-btns { position: fixed; top: 16px; right: 16px; display: flex; gap: 8px; z-index: 100; }
+  .icon-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 8px 12px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; font-family: 'DM Sans', sans-serif; font-weight: 600; }
+  .icon-btn:hover { color: var(--text); border-color: var(--accent2); }
+
   @media (max-width: 480px) {
     .phase-btn { min-width: 80px; font-size: 0.7rem; padding: 8px 6px; }
     .btn { padding: 10px 16px; font-size: 0.82rem; }
@@ -163,52 +139,21 @@
 </style>
 </head>
 <body>
-
-<button class="fullscreen-btn" onclick="toggleFullscreen()" title="Plein écran">⛶</button>
-
-<header>
-  <h1>Chrono Débat</h1>
-  <p>Gestionnaire de temps officiel</p>
-</header>
-
-<div class="phases" id="phases"></div>
-
-<div class="teams-row">
-  <div class="team-mini-card active-team" id="card-a">
-    <div class="mini-label">Équipe A</div>
-    <input class="mini-name-input" id="name-a" value="ÉQUIPE POUR" maxlength="20" />
-    <div class="mini-clock" id="mini-a">0:00</div>
-  </div>
-  <div class="team-mini-card team-b" id="card-b">
-    <div class="mini-label">Équipe B</div>
-    <input class="mini-name-input" id="name-b" value="ÉQUIPE CONTRE" maxlength="20" />
-    <div class="mini-clock" id="mini-b">0:00</div>
-  </div>
-</div>
-
-<div class="timer-card" id="main-card">
-  <div class="team-label" id="active-label">Tour actuel</div>
-  <div class="team-name team-a-name" id="active-name">ÉQUIPE POUR</div>
-  <div class="clock-display" id="clock">4:00</div>
-  <div class="progress-wrap"><div class="progress-fill" id="progress"></div></div>
-  <div class="controls">
-    <button class="btn btn-primary" id="start-btn" onclick="startStop()">▶ Démarrer</button>
-    <button class="btn btn-secondary" onclick="resetCurrent()">↺ Reset</button>
-    <button class="btn btn-secondary" onclick="switchTeam()">⇄ Changer d'équipe</button>
-    <button class="btn btn-danger" onclick="nextPhase()">Phase suivante →</button>
-  </div>
-</div>
-
-<div class="history-section">
-  <h3>Historique des temps</h3>
-  <div class="history-list" id="history">
-    <div style="color:var(--muted);font-size:0.82rem;">Aucun historique pour l'instant.</div>
-  </div>
-</div>
-
+<div id="app"></div>
 <div class="toast" id="toast"></div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  databaseURL: "https://chronostasi-default-rtdb.europe-west1.firebasedatabase.app"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const stateRef = ref(db, 'debatState');
+
 const phases = [
   { name: "Introduction",  duration: 4 * 60 },
   { name: "Développement", duration: 7 * 60 },
@@ -216,203 +161,13 @@ const phases = [
   { name: "Conclusion",    duration: 4 * 60 },
 ];
 
-let currentPhaseIdx = 0;
-let currentTeam = 'A';
-let timeLeft = phases[0].duration;
-let totalTime = phases[0].duration;
-let running = false;
-let interval = null;
-let history = [];
-let teamTimes = { A: 0, B: 0 };
-let warned60 = false;
+const isPublic = location.hash === '#public';
 
-function init() {
-  buildPhaseTabs();
-  updateUI();
-  updateTeamCards();
-}
-
-function buildPhaseTabs() {
-  const c = document.getElementById('phases');
-  c.innerHTML = '';
-  phases.forEach((p, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'phase-btn' + (i === currentPhaseIdx ? ' active' : '');
-    btn.innerHTML = p.name + '<span class="phase-time">' + formatTime(p.duration) + '</span>';
-    btn.onclick = () => goToPhase(i);
-    c.appendChild(btn);
-  });
-}
-
-function goToPhase(idx) {
-  if (running) stopTimer();
-  saveHistory();
-  currentPhaseIdx = idx;
-  currentTeam = 'A';
-  timeLeft = phases[idx].duration;
-  totalTime = phases[idx].duration;
-  teamTimes = { A: 0, B: 0 };
-  warned60 = false;
-  buildPhaseTabs();
-  document.getElementById('start-btn').textContent = '▶ Démarrer';
-  updateUI();
-  updateTeamCards();
-}
-
-function saveHistory() {
-  if (teamTimes.A > 0 || teamTimes.B > 0) {
-    history.push({ phase: phases[currentPhaseIdx].name, a: teamTimes.A, b: teamTimes.B });
-    renderHistory();
-  }
-}
-
-function renderHistory() {
-  const el = document.getElementById('history');
-  const nameA = document.getElementById('name-a').value || 'Équipe A';
-  const nameB = document.getElementById('name-b').value || 'Équipe B';
-  el.innerHTML = history.slice().reverse().map(h =>
-    '<div class="history-item">' +
-    '<span class="hi-phase">' + h.phase + '</span>' +
-    '<span class="hi-team-a">' + nameA + ': ' + formatTime(h.a) + '</span>' +
-    '<span class="hi-team-b">' + nameB + ': ' + formatTime(h.b) + '</span>' +
-    '</div>'
-  ).join('');
-}
-
-function startStop() {
-  if (running) stopTimer(); else startTimer();
-}
-
-function startTimer() {
-  if (timeLeft <= 0) return;
-  running = true;
-  document.getElementById('start-btn').textContent = '⏸ Pause';
-  interval = setInterval(() => {
-    timeLeft--;
-    teamTimes[currentTeam]++;
-    if (!warned60 && timeLeft === 60) { playBeep(1); warned60 = true; }
-    if (timeLeft <= 0) {
-      timeLeft = 0;
-      stopTimer();
-      playBeep(3);
-      showToast('⏰ Temps écoulé pour ' + getTeamName(currentTeam) + ' !');
-    }
-    updateUI();
-    updateTeamCards();
-  }, 1000);
-}
-
-function stopTimer() {
-  running = false;
-  clearInterval(interval);
-  document.getElementById('start-btn').textContent = '▶ Reprendre';
-}
-
-function resetCurrent() {
-  stopTimer();
-  timeLeft = phases[currentPhaseIdx].duration;
-  totalTime = phases[currentPhaseIdx].duration;
-  teamTimes = { A: 0, B: 0 };
-  warned60 = false;
-  document.getElementById('start-btn').textContent = '▶ Démarrer';
-  updateUI();
-  updateTeamCards();
-}
-
-function switchTeam() {
-  stopTimer();
-  currentTeam = currentTeam === 'A' ? 'B' : 'A';
-  timeLeft = phases[currentPhaseIdx].duration - teamTimes[currentTeam];
-  totalTime = phases[currentPhaseIdx].duration;
-  warned60 = timeLeft <= 60;
-  document.getElementById('start-btn').textContent = '▶ Démarrer';
-  updateUI();
-  updateTeamCards();
-  showToast('Tour de ' + getTeamName(currentTeam));
-}
-
-function nextPhase() {
-  stopTimer();
-  saveHistory();
-  if (currentPhaseIdx < phases.length - 1) {
-    currentPhaseIdx++;
-    currentTeam = 'A';
-    timeLeft = phases[currentPhaseIdx].duration;
-    totalTime = phases[currentPhaseIdx].duration;
-    teamTimes = { A: 0, B: 0 };
-    warned60 = false;
-    buildPhaseTabs();
-    document.getElementById('start-btn').textContent = '▶ Démarrer';
-    updateUI();
-    updateTeamCards();
-    showToast('Phase : ' + phases[currentPhaseIdx].name);
-  } else {
-    showToast('✅ Débat terminé !');
-  }
-}
-
-function updateUI() {
-  const clock = document.getElementById('clock');
-  const prog = document.getElementById('progress');
-  const card = document.getElementById('main-card');
-  const activeName = document.getElementById('active-name');
-  const activeLabel = document.getElementById('active-label');
-
-  clock.textContent = formatTime(timeLeft);
-  const ratio = totalTime > 0 ? timeLeft / totalTime : 0;
-  prog.style.width = (ratio * 100) + '%';
-
-  const isWarning = timeLeft <= 60 && timeLeft > 20;
-  const isDanger  = timeLeft <= 20;
-
-  clock.className = 'clock-display' + (isDanger ? ' danger' : isWarning ? ' warning' : '');
-  prog.className  = 'progress-fill'  + (isDanger ? ' danger' : isWarning ? ' warning' : '');
-  card.className  = 'timer-card'     + (isDanger ? ' danger' : isWarning ? ' warning' : '');
-
-  activeName.textContent = getTeamName(currentTeam);
-  activeName.className = 'team-name ' + (currentTeam === 'A' ? 'team-a-name' : 'team-b-name');
-  activeLabel.textContent = phases[currentPhaseIdx].name + ' — Tour de';
-}
-
-function updateTeamCards() {
-  document.getElementById('card-a').className = 'team-mini-card' + (currentTeam === 'A' ? ' active-team' : '');
-  document.getElementById('card-b').className = 'team-mini-card team-b' + (currentTeam === 'B' ? ' active-team' : '');
-  document.getElementById('mini-a').textContent = formatTime(teamTimes.A);
-  document.getElementById('mini-b').textContent = formatTime(teamTimes.B);
-}
-
-function getTeamName(team) {
-  return (document.getElementById('name-' + team.toLowerCase()).value || 'Équipe ' + team);
-}
-
-function formatTime(s) {
-  return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
-}
-
-let audioCtx = null;
-function playBeep(times) {
-  try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    let delay = 0;
-    for (let i = 0; i < times; i++) {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain); gain.connect(audioCtx.destination);
-      osc.frequency.value = times === 3 ? 880 : 660;
-      osc.type = 'sine';
-      gain.gain.setValueAtTime(0.4, audioCtx.currentTime + delay);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + 0.3);
-      osc.start(audioCtx.currentTime + delay);
-      osc.stop(audioCtx.currentTime + delay + 0.3);
-      delay += 0.4;
-    }
-  } catch(e) {}
-}
+function fmt(s) { return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
 
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2800);
 }
 
@@ -421,10 +176,264 @@ function toggleFullscreen() {
   else document.exitFullscreen?.();
 }
 
-document.getElementById('name-a').addEventListener('input', updateUI);
-document.getElementById('name-b').addEventListener('input', updateUI);
+// ========================
+// PUBLIC VIEW
+// ========================
+if (isPublic) {
+  document.body.className = 'public-view';
+  document.getElementById('app').innerHTML = `
+    <div class="pub-phase" id="pub-phase">Introduction</div>
+    <div class="pub-team team-a" id="pub-team">ÉQUIPE POUR</div>
+    <div class="pub-clock" id="pub-clock">4:00</div>
+    <div class="pub-progress-wrap"><div class="pub-progress-fill" id="pub-prog" style="width:100%"></div></div>
+    <div class="pub-hint">Vue publique · Grand écran</div>
+  `;
 
-init();
+  onValue(stateRef, (snapshot) => {
+    const s = snapshot.val();
+    if (!s) return;
+    const tl = s.timeLeft;
+    const isW = tl <= 60 && tl > 20;
+    const isD = tl <= 20;
+
+    document.getElementById('pub-phase').textContent = phases[s.phaseIdx].name;
+    const teamEl = document.getElementById('pub-team');
+    teamEl.textContent = s.team === 'A' ? s.nameA : s.nameB;
+    teamEl.className = 'pub-team ' + (s.team === 'A' ? 'team-a' : 'team-b');
+
+    const clock = document.getElementById('pub-clock');
+    clock.textContent = fmt(tl);
+    clock.className = 'pub-clock' + (isD ? ' danger' : isW ? ' warning' : '');
+
+    const prog = document.getElementById('pub-prog');
+    prog.style.width = (s.totalTime > 0 ? (tl / s.totalTime) * 100 : 0) + '%';
+    prog.className = 'pub-progress-fill' + (isD ? ' danger' : isW ? ' warning' : '');
+  });
+
+} else {
+  // ========================
+  // CONTROL VIEW
+  // ========================
+  document.getElementById('app').innerHTML = `
+    <div class="top-btns">
+      <button class="icon-btn" id="pub-btn">📺 Grand écran</button>
+      <button class="icon-btn" onclick="toggleFullscreen()">⛶</button>
+    </div>
+    <header>
+      <h1>Chrono Débat</h1>
+      <p>Gestionnaire de temps officiel</p>
+      <div class="sync-badge"><div class="sync-dot" id="sync-dot"></div><span id="sync-label">Connexion...</span></div>
+    </header>
+    <div class="phases" id="phases"></div>
+    <div class="teams-row">
+      <div class="team-mini-card active-team" id="card-a">
+        <div class="mini-label">Équipe A</div>
+        <input class="mini-name-input" id="name-a" value="ÉQUIPE POUR" maxlength="20" />
+        <div class="mini-clock" id="mini-a">0:00</div>
+      </div>
+      <div class="team-mini-card team-b" id="card-b">
+        <div class="mini-label">Équipe B</div>
+        <input class="mini-name-input" id="name-b" value="ÉQUIPE CONTRE" maxlength="20" />
+        <div class="mini-clock" id="mini-b">0:00</div>
+      </div>
+    </div>
+    <div class="timer-card" id="main-card">
+      <div class="team-label" id="active-label">Tour actuel</div>
+      <div class="team-name team-a-name" id="active-name">ÉQUIPE POUR</div>
+      <div class="clock-display" id="clock">4:00</div>
+      <div class="progress-wrap"><div class="progress-fill" id="progress" style="width:100%"></div></div>
+      <div class="controls">
+        <button class="btn btn-primary" id="start-btn">▶ Démarrer</button>
+        <button class="btn btn-secondary" id="reset-btn">↺ Reset</button>
+        <button class="btn btn-secondary" id="switch-btn">⇄ Changer d'équipe</button>
+        <button class="btn btn-danger" id="next-btn">Phase suivante →</button>
+      </div>
+    </div>
+    <div class="history-section">
+      <h3>Historique des temps</h3>
+      <div class="history-list" id="history"><div style="color:var(--muted);font-size:0.82rem;">Aucun historique pour l'instant.</div></div>
+    </div>
+  `;
+
+  window.toggleFullscreen = toggleFullscreen;
+
+  let state = {
+    phaseIdx: 0, team: 'A',
+    timeLeft: phases[0].duration, totalTime: phases[0].duration,
+    teamTimes: { A: 0, B: 0 },
+    running: false,
+    nameA: 'ÉQUIPE POUR', nameB: 'ÉQUIPE CONTRE',
+    history: [], ts: Date.now()
+  };
+
+  let interval = null;
+  let warned60 = false;
+  let audioCtx = null;
+  let isConnected = false;
+
+  // Firebase sync
+  onValue(stateRef, () => {
+    if (!isConnected) {
+      isConnected = true;
+      document.getElementById('sync-dot').className = 'sync-dot connected';
+      document.getElementById('sync-label').textContent = 'Synchronisé';
+    }
+  });
+
+  function push() {
+    state.ts = Date.now();
+    set(stateRef, JSON.parse(JSON.stringify(state)));
+  }
+
+  function buildPhaseTabs() {
+    const c = document.getElementById('phases');
+    c.innerHTML = '';
+    phases.forEach((p, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'phase-btn' + (i === state.phaseIdx ? ' active' : '');
+      btn.innerHTML = p.name + '<span class="phase-time">' + fmt(p.duration) + '</span>';
+      btn.onclick = () => goToPhase(i);
+      c.appendChild(btn);
+    });
+  }
+
+  function goToPhase(idx) {
+    if (state.running) stopTimer();
+    saveHistory();
+    state.phaseIdx = idx; state.team = 'A';
+    state.timeLeft = phases[idx].duration; state.totalTime = phases[idx].duration;
+    state.teamTimes = { A: 0, B: 0 }; warned60 = false;
+    buildPhaseTabs();
+    document.getElementById('start-btn').textContent = '▶ Démarrer';
+    updateUI(); updateTeamCards(); push();
+  }
+
+  function saveHistory() {
+    if (state.teamTimes.A > 0 || state.teamTimes.B > 0) {
+      state.history.push({ phase: phases[state.phaseIdx].name, a: state.teamTimes.A, b: state.teamTimes.B });
+      renderHistory();
+    }
+  }
+
+  function renderHistory() {
+    const el = document.getElementById('history');
+    if (!state.history.length) { el.innerHTML = '<div style="color:var(--muted);font-size:0.82rem;">Aucun historique pour l\'instant.</div>'; return; }
+    const nA = state.nameA || 'Équipe A';
+    const nB = state.nameB || 'Équipe B';
+    el.innerHTML = state.history.slice().reverse().map(h =>
+      '<div class="history-item"><span class="hi-phase">' + h.phase + '</span>' +
+      '<span class="hi-team-a">' + nA + ': ' + fmt(h.a) + '</span>' +
+      '<span class="hi-team-b">' + nB + ': ' + fmt(h.b) + '</span></div>'
+    ).join('');
+  }
+
+  function startTimer() {
+    if (state.timeLeft <= 0) return;
+    state.running = true;
+    document.getElementById('start-btn').textContent = '⏸ Pause';
+    interval = setInterval(() => {
+      state.timeLeft--;
+      state.teamTimes[state.team]++;
+      if (!warned60 && state.timeLeft === 60) { playBeep(1); warned60 = true; }
+      if (state.timeLeft <= 0) {
+        state.timeLeft = 0; stopTimer();
+        playBeep(3);
+        showToast('⏰ Temps écoulé pour ' + (state.team === 'A' ? state.nameA : state.nameB) + ' !');
+      }
+      updateUI(); updateTeamCards(); push();
+    }, 1000);
+  }
+
+  function stopTimer() {
+    state.running = false; clearInterval(interval);
+    document.getElementById('start-btn').textContent = '▶ Reprendre';
+    push();
+  }
+
+  function updateUI() {
+    const tl = state.timeLeft;
+    const isW = tl <= 60 && tl > 20;
+    const isD = tl <= 20;
+    document.getElementById('clock').textContent = fmt(tl);
+    document.getElementById('clock').className = 'clock-display' + (isD ? ' danger' : isW ? ' warning' : '');
+    const ratio = state.totalTime > 0 ? tl / state.totalTime : 0;
+    document.getElementById('progress').style.width = (ratio * 100) + '%';
+    document.getElementById('progress').className = 'progress-fill' + (isD ? ' danger' : isW ? ' warning' : '');
+    document.getElementById('main-card').className = 'timer-card' + (isD ? ' danger' : isW ? ' warning' : '');
+    document.getElementById('active-name').textContent = state.team === 'A' ? state.nameA : state.nameB;
+    document.getElementById('active-name').className = 'team-name ' + (state.team === 'A' ? 'team-a-name' : 'team-b-name');
+    document.getElementById('active-label').textContent = phases[state.phaseIdx].name + ' — Tour de';
+  }
+
+  function updateTeamCards() {
+    document.getElementById('card-a').className = 'team-mini-card' + (state.team === 'A' ? ' active-team' : '');
+    document.getElementById('card-b').className = 'team-mini-card team-b' + (state.team === 'B' ? ' active-team' : '');
+    document.getElementById('mini-a').textContent = fmt(state.teamTimes.A);
+    document.getElementById('mini-b').textContent = fmt(state.teamTimes.B);
+  }
+
+  function playBeep(times) {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      let delay = 0;
+      for (let i = 0; i < times; i++) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.frequency.value = times === 3 ? 880 : 660; osc.type = 'sine';
+        gain.gain.setValueAtTime(0.4, audioCtx.currentTime + delay);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + 0.3);
+        osc.start(audioCtx.currentTime + delay); osc.stop(audioCtx.currentTime + delay + 0.3);
+        delay += 0.4;
+      }
+    } catch(e) {}
+  }
+
+  // Buttons
+  document.getElementById('start-btn').onclick = () => { if (state.running) stopTimer(); else startTimer(); };
+
+  document.getElementById('reset-btn').onclick = () => {
+    stopTimer();
+    state.timeLeft = phases[state.phaseIdx].duration; state.totalTime = phases[state.phaseIdx].duration;
+    state.teamTimes = { A: 0, B: 0 }; warned60 = false;
+    document.getElementById('start-btn').textContent = '▶ Démarrer';
+    updateUI(); updateTeamCards(); push();
+  };
+
+  document.getElementById('switch-btn').onclick = () => {
+    stopTimer();
+    state.team = state.team === 'A' ? 'B' : 'A';
+    state.timeLeft = phases[state.phaseIdx].duration - state.teamTimes[state.team];
+    state.totalTime = phases[state.phaseIdx].duration;
+    warned60 = state.timeLeft <= 60;
+    document.getElementById('start-btn').textContent = '▶ Démarrer';
+    updateUI(); updateTeamCards(); push();
+    showToast('Tour de ' + (state.team === 'A' ? state.nameA : state.nameB));
+  };
+
+  document.getElementById('next-btn').onclick = () => {
+    stopTimer(); saveHistory();
+    if (state.phaseIdx < phases.length - 1) {
+      state.phaseIdx++; state.team = 'A';
+      state.timeLeft = phases[state.phaseIdx].duration; state.totalTime = phases[state.phaseIdx].duration;
+      state.teamTimes = { A: 0, B: 0 }; warned60 = false;
+      buildPhaseTabs();
+      document.getElementById('start-btn').textContent = '▶ Démarrer';
+      updateUI(); updateTeamCards(); push();
+      showToast('Phase : ' + phases[state.phaseIdx].name);
+    } else { showToast('✅ Débat terminé !'); }
+  };
+
+  document.getElementById('pub-btn').onclick = () => {
+    window.open(location.href.split('#')[0] + '#public', '_blank');
+    showToast('Vue grand écran ouverte !');
+  };
+
+  document.getElementById('name-a').addEventListener('input', () => { state.nameA = document.getElementById('name-a').value; updateUI(); push(); });
+  document.getElementById('name-b').addEventListener('input', () => { state.nameB = document.getElementById('name-b').value; updateUI(); push(); });
+
+  buildPhaseTabs(); updateUI(); updateTeamCards(); push();
+}
 </script>
 </body>
 </html>
